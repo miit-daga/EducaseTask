@@ -8,15 +8,18 @@ const SchoolList = ({ latitude, longitude }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const api = axios.create({
+        baseURL: import.meta.env.VITE_API_BASE_URL,
+    });
+
     const fetchSchools = async () => {
         setLoading(true);
         setError(null);
 
         try {
-            const response = await axios.get('http://localhost:3000/api/listSchools', {
+            const response = await api.get('/listSchools', {
                 params: { latitude, longitude }
             });
-
             if (Array.isArray(response.data)) {
                 setSchools(response.data);
             } else {

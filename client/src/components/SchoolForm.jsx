@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -12,20 +11,29 @@ const SchoolForm = ({ onAddSchool }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // Create Axios instance with base URL
+    const api = axios.create({
+        baseURL: import.meta.env.VITE_API_BASE_URL,
+    });
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
         try {
-            const response = await axios.post('http://localhost:3000/api/addSchool', {
+            // Use the axios instance created with the base URL
+            const response = await api.post('/addSchool', {
                 name,
                 address,
                 latitude,
                 longitude
             });
+        
             alert('School added successfully!');
+            
             if (onAddSchool) onAddSchool(response.data);
+            
             // Reset form fields
             setName('');
             setAddress('');
